@@ -1,4 +1,4 @@
-# AGENT.md
+# AGENTS.md
 
 ## Project overview
 
@@ -20,7 +20,7 @@ cli-quiz/
 ├── server.py        # HTTP server + JSON API + session scoring for the web quiz
 ├── questions.json   # Shared question bank (topics -> questions/choices/answer/explanation)
 ├── README.md        # Currently only "# QUIZ-"
-├── AGENT.md         # This file
+├── AGENTS.md        # This file
 └── web/
     ├── index.html   # Single-page UI: start, quiz, and result screens
     ├── app.js       # Client state, API calls, rendering, keyboard shortcuts
