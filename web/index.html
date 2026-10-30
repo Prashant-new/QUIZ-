@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <p class="eyebrow">Practice makes progress</p>
+      <h1>Quiz App</h1>
+      <p class="intro">Choose a topic, answer the questions, and review what you missed.</p>
+    </header>
+
+    <p id="error" class="error" role="alert" aria-live="polite"></p>
+
+    <section id="start-screen" class="screen card">
+      <h2>Choose a topic</h2>
+      <div id="topics" class="topics" aria-label="Quiz topics"></div>
+
+      <div class="field">
+        <label for="count">Number of questions</label>
+        <input id="count" type="number" min="1" value="5" inputmode="numeric">
+        <p id="count-hint" class="hint">Choose between 1 and 5.</p>
+      </div>
+
+      <button id="start-btn" class="primary" type="button">Start quiz</button>
+    </section>
+
+    <section id="quiz-screen" class="screen card hidden">
+      <div class="quiz-top">
+        <span id="quiz-topic" class="badge"></span>
+        <span id="quiz-progress" class="muted"></span>
+      </div>
+
+      <div class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="progress-bar" class="progress-fill"></div>
+      </div>
+
+      <h2 id="question-text" class="question-text"></h2>
+      <div id="choices" class="choices"></div>
+      <p class="hint">Tip: press 1-9 to choose, Enter for next, or Left Arrow to go back.</p>
+      <div class="actions">
+        <button id="previous-btn" class="secondary" type="button" disabled>Previous</button>
+        <button id="next-btn" class="primary" type="button" disabled>Next question</button>
+      </div>
+    </section>
+
+    <section id="result-screen" class="screen card hidden">
+      <h2>Results</h2>
+      <p id="score" class="score"></p>
+      <p id="score-message" class="muted"></p>
+      <div id="review" class="review"></div>
+      <button id="again-btn" class="primary" type="button">Play again</button>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

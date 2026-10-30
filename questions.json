@@ -1,0 +1,214 @@
+{
+  "python": {
+    "label": "Python",
+    "questions": [
+      {
+        "question": "Which keyword defines a function in Python?",
+        "choices": ["func", "def", "define", "function"],
+        "answer": 1,
+        "explanation": "Python functions start with def, for example: def greet():."
+      },
+      {
+        "question": "What is the type of the result of 10 / 2 in Python 3?",
+        "choices": ["int", "str", "float", "bool"],
+        "answer": 2,
+        "explanation": "The / operator always performs true division and returns a float, so 10 / 2 is 5.0."
+      },
+      {
+        "question": "Which symbol starts a single-line comment in Python?",
+        "choices": ["//", "#", "/*", "--"],
+        "answer": 1,
+        "explanation": "Python uses # for comments, for example: # this is a comment."
+      },
+      {
+        "question": "Which literal syntax creates a list in Python?",
+        "choices": ["(1, 2)", "[1, 2]", "{1, 2}", "<1, 2>"],
+        "answer": 1,
+        "explanation": "Square brackets create a list. Parentheses create a tuple and braces create a set or dictionary."
+      },
+      {
+        "question": "What does len('hello') return?",
+        "choices": ["4", "5", "6", "Error"],
+        "answer": 1,
+        "explanation": "len() returns the number of items in a sequence, and 'hello' has five characters."
+      },
+      {
+        "question": "Which Python type is immutable?",
+        "choices": ["list", "dict", "set", "tuple"],
+        "answer": 3,
+        "explanation": "Tuples cannot be changed after creation, while lists, dictionaries, and sets can be modified."
+      },
+      {
+        "question": "What numbers does range(3) produce?",
+        "choices": ["0, 1, 2", "1, 2, 3", "0, 1, 2, 3", "1, 2"],
+        "answer": 0,
+        "explanation": "range(3) starts at 0 and stops before 3, giving 0, 1, 2."
+      },
+      {
+        "question": "Which block is used to handle exceptions in Python?",
+        "choices": ["try/except", "if/else", "for/in", "with/as"],
+        "answer": 0,
+        "explanation": "Put risky code inside try and handle errors inside except."
+      }
+    ]
+  },
+  "java": {
+    "label": "Java",
+    "questions": [
+      {
+        "question": "Which is the correct main method signature in Java?",
+        "choices": ["public static void main(String[] args)", "public void main(String[] args)", "static void main()", "public static main(String[] args)"],
+        "answer": 0,
+        "explanation": "The JVM uses public static void main(String[] args) as the program entry point."
+      },
+      {
+        "question": "Which of these is a primitive type in Java?",
+        "choices": ["String", "Integer", "int", "ArrayList"],
+        "answer": 2,
+        "explanation": "int is a primitive type built into the language, while String and Integer are classes."
+      },
+      {
+        "question": "Which keyword lets a class inherit from another class?",
+        "choices": ["implements", "extends", "inherits", "super"],
+        "answer": 1,
+        "explanation": "A class extends another class, while interfaces are implemented with implements."
+      },
+      {
+        "question": "How should you compare two Strings for equal text in Java?",
+        "choices": ["==", ".equals()", ".compare()", "equals"],
+        "answer": 1,
+        "explanation": "Use .equals() for text equality. The == operator compares object references."
+      },
+      {
+        "question": "Which command compiles a Java source file?",
+        "choices": ["java", "javac", "jrun", "compile"],
+        "answer": 1,
+        "explanation": "javac Hello.java compiles the code, then java Hello runs the resulting class."
+      },
+      {
+        "question": "What is the default value of an int field in Java?",
+        "choices": ["null", "0", "1", "undefined"],
+        "answer": 1,
+        "explanation": "Numeric fields such as int default to 0 when they are not explicitly initialized."
+      },
+      {
+        "question": "Which collection stores key-value pairs in Java?",
+        "choices": ["ArrayList", "HashSet", "HashMap", "LinkedList"],
+        "answer": 2,
+        "explanation": "HashMap stores key-value pairs and allows fast lookup by key."
+      },
+      {
+        "question": "What does the final keyword mean for a variable?",
+        "choices": ["It cannot be reassigned", "It is private", "It must be static", "It is deleted after use"],
+        "answer": 0,
+        "explanation": "A final variable can be assigned only once and then behaves like a constant."
+      }
+    ]
+  },
+  "html": {
+    "label": "HTML",
+    "questions": [
+      {
+        "question": "Which tag creates the largest heading in HTML?",
+        "choices": ["<h6>", "<h1>", "<head>", "<heading>"],
+        "answer": 1,
+        "explanation": "<h1> is the top-level heading. Headings get smaller from h2 down to h6."
+      },
+      {
+        "question": "Which tag creates a hyperlink?",
+        "choices": ["<link>", "<a>", "<href>", "<url>"],
+        "answer": 1,
+        "explanation": "Use <a href='https://example.com'>text</a> to create a link."
+      },
+      {
+        "question": "Which attribute provides alternative text for an image?",
+        "choices": ["title", "src", "alt", "caption"],
+        "answer": 2,
+        "explanation": "The alt attribute describes an image for screen readers or when the image cannot load."
+      },
+      {
+        "question": "Which tag inserts a single line break?",
+        "choices": ["<break>", "<lb>", "<br>", "<newline>"],
+        "answer": 2,
+        "explanation": "<br> inserts a line break without starting a new paragraph."
+      },
+      {
+        "question": "Which tag creates an unordered (bulleted) list?",
+        "choices": ["<ol>", "<ul>", "<li>", "<list>"],
+        "answer": 1,
+        "explanation": "<ul> creates a bulleted list, while <ol> creates a numbered list."
+      },
+      {
+        "question": "Which tag is best for a block of navigation links?",
+        "choices": ["<nav>", "<menu>", "<header>", "<section>"],
+        "answer": 0,
+        "explanation": "The semantic <nav> element marks the main navigation area of a page."
+      },
+      {
+        "question": "Which input type hides the characters a user types?",
+        "choices": ["text", "hidden", "password", "secret"],
+        "answer": 2,
+        "explanation": "input type='password' masks the typed characters on screen."
+      },
+      {
+        "question": "Which doctype declares an HTML5 document?",
+        "choices": ["<!DOCTYPE html>", "<!DOCTYPE HTML5>", "<html version='5'>", "<doctype html5>"],
+        "answer": 0,
+        "explanation": "<!DOCTYPE html> tells the browser to use modern HTML5 standards mode."
+      }
+    ]
+  },
+  "javascript": {
+    "label": "JavaScript",
+    "questions": [
+      {
+        "question": "Which keyword declares a block-scoped variable in JavaScript?",
+        "choices": ["var", "let", "define", "dim"],
+        "answer": 1,
+        "explanation": "let and const are block-scoped, while var is function-scoped."
+      },
+      {
+        "question": "Which operator checks equality without type conversion?",
+        "choices": ["==", "=", "===", "!="],
+        "answer": 2,
+        "explanation": "=== checks both value and type, so '5' === 5 is false."
+      },
+      {
+        "question": "What is the result of typeof 'hello' in JavaScript?",
+        "choices": ["string", "text", "char", "object"],
+        "answer": 0,
+        "explanation": "typeof returns 'string' for string values."
+      },
+      {
+        "question": "Which method adds an item to the end of an array?",
+        "choices": ["push", "pop", "shift", "unshift"],
+        "answer": 0,
+        "explanation": "push() adds to the end, pop() removes from the end, and unshift() adds to the start."
+      },
+      {
+        "question": "What happens when you reassign a const variable?",
+        "choices": ["It throws an error", "It becomes a let variable", "The assignment is ignored", "It becomes undefined"],
+        "answer": 0,
+        "explanation": "A const variable cannot be reassigned after its initial assignment."
+      },
+      {
+        "question": "Which of these is an arrow function?",
+        "choices": ["function () {}", "() => {}", "def () {}", "fn () {}"],
+        "answer": 1,
+        "explanation": "Arrow functions use the => syntax, for example: (a, b) => a + b."
+      },
+      {
+        "question": "Which method selects an element by its id?",
+        "choices": ["document.querySelectorAll", "document.getElementById", "document.getElementsByClass", "document.findId"],
+        "answer": 1,
+        "explanation": "document.getElementById('app') returns the element whose id is app."
+      },
+      {
+        "question": "What does NaN stand for?",
+        "choices": ["Not a Null", "Not a Number", "New and Null", "Number and Null"],
+        "answer": 1,
+        "explanation": "NaN means Not a Number. It appears when a math operation does not produce a valid number."
+      }
+    ]
+  }
+}
