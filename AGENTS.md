@@ -46,7 +46,8 @@ Web flow as implemented today:
    between questions.
 4. Finishing calls `POST /api/submit` with `{ quizId, answers }`. `server.py`
    pops the session, validates the answers, and computes the score from those
-   final submitted answers. The correct answers never reach the client.
+   final submitted answers. Correct answers must not be sent to the client
+   before submission. They may be included in the review after submission.
 
 ### Requirements for the Web Quiz
 
