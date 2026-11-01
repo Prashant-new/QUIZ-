@@ -49,6 +49,24 @@
         "choices": ["try/except", "if/else", "for/in", "with/as"],
         "answer": 0,
         "explanation": "Put risky code inside try and handle errors inside except."
+      },
+      {
+        "question": "Which function displays text in the console in Python?",
+        "choices": ["echo()", "print()", "console.log()", "write()"],
+        "answer": 1,
+        "explanation": "print() outputs text to the console, for example: print('Hello, world!')."
+      },
+      {
+        "question": "Which Python type is used for the values True and False?",
+        "choices": ["int", "str", "bool", "float"],
+        "answer": 2,
+        "explanation": "True and False are the two values of the bool type, which represents boolean logic."
+      },
+      {
+        "question": "Which operator raises a number to a power in Python?",
+        "choices": ["^", "**", "*", "//"],
+        "answer": 1,
+        "explanation": "The ** operator means exponentiation, so 2 ** 3 is 8. The ^ operator is bitwise XOR."
       }
     ]
   },
