@@ -33,15 +33,15 @@ bank but is not the focus of this specification.
    between 1 and that topic's question count (default 5, capped by availability).
 2. The application presents multiple-choice questions one at a time with a
    progress bar and a "Question X of Y" label.
-3. Students must select an answer before moving to the next question; the
-   Next/Finish button stays disabled until a choice is selected.
+3. Students can move to the next question at any time, even without answering
+   the current question; the Next button is always enabled.
 4. Students can move back to earlier questions at any time before submission
    (Previous is disabled on the first question).
 5. Selected answers remain saved during navigation and are restored, and
    highlighted, when returning to a question.
 6. Students can change an answer before submitting.
 7. On the last question the button reads "Finish quiz"; submission requires an
-   answer for every question.
+   answer for every question and shows an error if any are unanswered.
 8. The server calculates the score using the final submitted answers.
 9. Correct answers are not sent to the browser before submission; they may be
    included in the review after submission.
@@ -117,7 +117,7 @@ Automated/scripted checks:
 Manual checks:
 - Start `python server.py` and open `http://localhost:8000`.
 - Exercise the topics list, count validation, answering, Previous/Next
-  (confirming Next is disabled until a choice is selected), changing answers,
+  (confirming Next works with or without an answer), changing answers,
   submission, scoring, review, "Play again", and the theme toggle.
 - Check the layout at desktop and narrow mobile widths.
 - Check that the reduced-motion preference disables celebration animation and

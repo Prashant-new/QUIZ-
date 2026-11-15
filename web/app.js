@@ -238,7 +238,7 @@ function renderQuestion() {
 
   const isLast = state.current === state.quiz.total - 1;
   elements.previousBtn.disabled = state.current === 0;
-  elements.nextBtn.disabled = state.selectedChoice === null;
+  elements.nextBtn.disabled = false;
   elements.nextBtn.textContent = isLast ? "Finish quiz" : "Next question";
   animateQuestion();
 }
@@ -269,10 +269,6 @@ function previousQuestion() {
 }
 
 async function nextQuestion() {
-  if (state.selectedChoice === null) {
-    return;
-  }
-
   if (state.current < state.quiz.total - 1) {
     state.current += 1;
     renderQuestion();
