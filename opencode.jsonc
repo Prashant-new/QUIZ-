@@ -1,0 +1,112 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Permission policy for opencode 1.18.31 (V1 permission syntax).
+  // Rules are evaluated in order and the LAST matching rule wins.
+  // Broad rules must come first; narrow exceptions follow them.
+  "permission": {
+    // Deny anything that is not explicitly re-allowed below.
+    "*": "deny",
+
+    // Project source may be read. Secrets, credentials and private key
+    // material are denied even though the rest of the project is readable.
+    "read": {
+      "*": "allow",
+      ".env": "deny",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env*": "deny",
+      "*.env.example": "allow",
+      "*api*key*": "deny",
+      "*apikey*": "deny",
+      "*credential*": "deny",
+      "*secret*": "deny",
+      "*token*": "deny",
+      "*.pem": "deny",
+      "*.key": "deny",
+      "*.p12": "deny",
+      "*.pfx": "deny",
+      "*.jks": "deny",
+      "*.keystore": "deny",
+      "*id_rsa*": "deny",
+      "*id_ed25519*": "deny",
+      ".ssh/*": "deny",
+      "*/.ssh/*": "deny",
+      ".git/*": "deny",
+      "*/.git/*": "deny",
+      ".npmrc": "deny",
+      "*/.npmrc": "deny",
+      ".pypirc": "deny",
+      "*/.pypirc": "deny",
+      ".netrc": "deny",
+      "*/.netrc": "deny",
+      ".git-credentials": "deny",
+      "*/.git-credentials": "deny",
+      "milestone-2-session.json": "deny"
+    },
+
+    // Only quiz application source files may be edited. Harness code,
+    // verification tools, tests, answer keys, config and git data stay read-only.
+    "edit": {
+      "*": "deny",
+      "main.py": "allow",
+      "server.py": "allow",
+      "web/*": "allow",
+      "questions.json": "allow"
+    },
+
+    // grep permission is keyed to the regex, not the file path. Allowing it
+    // would allow content searches of .env and other sensitive files.
+    "grep": "deny",
+
+    // Listing and globbing reveal names but do not read file contents.
+    "glob": { "*": "allow" },
+    "list": { "*": "allow" },
+
+    // Shell is deny-by-default. Only fixed, non-destructive checks are
+    // allowed. Deletions and pushes require an explicit confirmation.
+    "bash": {
+      "*": "deny",
+      "python -m py_compile main.py server.py": "allow",
+      "node --check web/app.js": "allow",
+      "git status *": "allow",
+      "git diff --stat *": "allow",
+      "git log --oneline *": "allow",
+
+      "rm *": "ask",
+      "del *": "ask",
+      "erase *": "ask",
+      "rd *": "ask",
+      "rmdir *": "ask",
+      "Remove-Item *": "ask",
+      "git clean *": "ask",
+      "git rm *": "ask",
+      "git push *": "ask"
+    },
+
+    // Keep tool-driven access inside the workspace. opencode still needs its
+    // own tool-output directory so truncated tool results remain readable.
+    "external_directory": {
+      "*": "deny",
+      "~/.local/share/opencode/tool-output/*": "allow"
+    },
+
+    // Subagents receive a fresh session ID, and therefore a fresh verification
+    // budget. Deny them so the 3-attempt limit stays shared for this run.
+    "task": "deny",
+
+    // No outbound network tools.
+    "webfetch": "deny",
+    "websearch": "deny",
+
+    // Approved metered verification tools.
+    "check_questions": "allow",
+    "run_quiz_test": "allow",
+
+    "question": "allow",
+    "todowrite": "allow",
+    "lsp": "allow",
+    "skill": "allow",
+    "doom_loop": "ask"
+  }
+}
