@@ -1,0 +1,160 @@
+warning: in the working copy of 'tools/check_questions.py', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/questions.json b/questions.json[m
+[1mindex f8f4268..a5ba4aa 100644[m
+[1m--- a/questions.json[m
+[1m+++ b/questions.json[m
+[36m@@ -67,6 +67,42 @@[m
+         "choices": ["^", "**", "*", "//"],[m
+         "answer": 1,[m
+         "explanation": "The ** operator means exponentiation, so 2 ** 3 is 8. The ^ operator is bitwise XOR."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "Which list method removes and returns the last item?",[m
+[32m+[m[32m        "choices": ["append()", "pop()", "remove()", "insert()"],[m
+[32m+[m[32m        "answer": 1,[m
+[32m+[m[32m        "explanation": "pop() with no argument removes and returns the last item of a list, while remove() deletes a value by matching it."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "How do you access the value stored under the key 'name' in a dictionary called person?",[m
+[32m+[m[32m        "choices": ["person['name']", "person.name", "person('name')", "person->name"],[m
+[32m+[m[32m        "answer": 0,[m
+[32m+[m[32m        "explanation": "Dictionary values are accessed with square brackets and the key, for example: person['name']. Dot notation and parentheses do not look up dictionary keys."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "Which string method removes leading and trailing whitespace in Python?",[m
+[32m+[m[32m        "choices": ["strip()", "trim()", "clean()", "squeeze()"],[m
+[32m+[m[32m        "answer": 0,[m
+[32m+[m[32m        "explanation": "strip() returns a copy of the string with leading and trailing whitespace removed."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "Which list method adds a single item to the end of a list in Python?",[m
+[32m+[m[32m        "choices": ["append()", "add()", "push()", "insert()"],[m
+[32m+[m[32m        "answer": 0,[m
+[32m+[m[32m        "explanation": "append() adds one item to the end of a list, while insert() adds an item at a specific position."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "Which keyword is used to import a module in Python?",[m
+[32m+[m[32m        "choices": ["import", "include", "require", "using"],[m
+[32m+[m[32m        "answer": 0,[m
+[32m+[m[32m        "explanation": "The import keyword loads a module, for example: import math."[m
+[32m+[m[32m      },[m
+[32m+[m[32m      {[m
+[32m+[m[32m        "question": "Which built-in function returns the largest item in an iterable?",[m
+[32m+[m[32m        "choices": ["max()", "min()", "sum()", "top()"],[m
+[32m+[m[32m        "answer": 0,[m
+[32m+[m[32m        "explanation": "max() returns the largest item, for example: max([3, 1, 2]) is 3."[m
+       }[m
+     ][m
+   },[m
+[1mdiff --git a/tools/check_questions.py b/tools/check_questions.py[m
+[1mindex fc2ecc4..41a6fb5 100644[m
+[1m--- a/tools/check_questions.py[m
+[1m+++ b/tools/check_questions.py[m
+[36m@@ -1,12 +1,13 @@[m
+ #!/usr/bin/env python3[m
+[31m-"""Validate the structure of the quiz question bank.[m
+[32m+[m[32m"""Validate the structure and stored answers of the quiz question bank.[m
+ [m
+ Usage:[m
+[31m-    python tools/check_questions.py [path-to-questions.json][m
+[32m+[m[32m    python tools/check_questions.py [path-to-questions.json] [path-to-answer-key.json][m
+ [m
+[31m-The checker only reads the question bank; it never modifies it. It prints a[m
+[31m-JSON report with ``passed``, ``checked_questions``, and ``errors`` and exits[m
+[31m-with status 0 when every question is valid, or 1 otherwise.[m
+[32m+[m[32mThe checker only reads the question bank and its answer key; it never modifies[m
+[32m+[m[32mthem. It prints a JSON report with ``passed``, ``checked_questions``,[m
+[32m+[m[32m``checked_answers``, and ``errors`` and exits with status 0 when every question[m
+[32m+[m[32mis valid, or 1 otherwise.[m
+ """[m
+ [m
+ import json[m
+[36m@@ -29,6 +30,19 @@[m [mdef find_default_questions_path():[m
+     return candidates[0][m
+ [m
+ [m
+[32m+[m[32mdef find_default_answer_key_path():[m
+[32m+[m[32m    """Locate answer_key.json next to this checker or under tools/."""[m
+[32m+[m[32m    tool_dir = Path(__file__).resolve().parent[m
+[32m+[m[32m    candidates = [[m
+[32m+[m[32m        tool_dir / "answer_key.json",[m
+[32m+[m[32m        Path.cwd() / "tools" / "answer_key.json",[m
+[32m+[m[32m    ][m
+[32m+[m[32m    for candidate in candidates:[m
+[32m+[m[32m        if candidate.is_file():[m
+[32m+[m[32m            return candidate[m
+[32m+[m[32m    return candidates[0][m
+[32m+[m
+[32m+[m
+ def is_non_empty_text(value):[m
+     return isinstance(value, str) and bool(value.strip())[m
+ [m
+[36m@@ -43,13 +57,14 @@[m [mdef add_error(errors, topic, question_number, message):[m
+     )[m
+ [m
+ [m
+[31m-def check_questions(data):[m
+[32m+[m[32mdef check_questions(data, answer_key=None):[m
+     errors = [][m
+     checked_questions = 0[m
+[32m+[m[32m    checked_answers = 0[m
+ [m
+     if not isinstance(data, dict):[m
+         add_error(errors, None, None, "question bank must be a JSON object")[m
+[31m-        return checked_questions, errors[m
+[32m+[m[32m        return checked_questions, checked_answers, errors[m
+ [m
+     for topic, topic_data in data.items():[m
+         if not isinstance(topic_data, dict):[m
+[36m@@ -61,6 +76,9 @@[m [mdef check_questions(data):[m
+             add_error(errors, topic, None, "topic must contain a questions list")[m
+             continue[m
+ [m
+[32m+[m[32m        topic_answers = answer_key.get(topic) if isinstance(answer_key, dict) else None[m
+[32m+[m[32m        seen_question_texts = set()[m
+[32m+[m
+         for number, question in enumerate(questions, start=1):[m
+             checked_questions += 1[m
+ [m
+[36m@@ -68,7 +86,9 @@[m [mdef check_questions(data):[m
+                 add_error(errors, topic, number, "question must be a JSON object")[m
+                 continue[m
+ [m
+[31m-            if not is_non_empty_text(question.get("question")):[m
+[32m+[m[32m            question_text = question.get("question")[m
+[32m+[m[32m            valid_question_text = is_non_empty_text(question_text)[m
+[32m+[m[32m            if not valid_question_text:[m
+                 add_error(errors, topic, number, "question text is empty")[m
+ [m
+             choices = question.get("choices")[m
+[36m@@ -87,6 +107,7 @@[m [mdef check_questions(data):[m
+                 valid_choices = True[m
+ [m
+             answer = question.get("answer")[m
+[32m+[m[32m            valid_answer = False[m
+             if isinstance(answer, bool) or not isinstance(answer, int):[m
+                 add_error(errors, topic, number, "answer must be an integer index")[m
+             elif not valid_choices:[m
+[36m@@ -105,17 +126,80 @@[m [mdef check_questions(data):[m
+                         answer, len(choices)[m
+                     ),[m
+                 )[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                valid_answer = True[m
+ [m
+             if not is_non_empty_text(question.get("explanation")):[m
+                 add_error(errors, topic, number, "explanation is empty")[m
+ [m
+[31m-    return checked_questions, errors[m
+[32m+[m[32m            if valid_question_text:[m
+[32m+[m[32m                if question_text in seen_question_texts:[m
+[32m+[m[32m                    add_error([m
+[32m+[m[32m                        errors,[m
+[32m+[m[32m                        topic,[m
+[32m+[m[32m                        number,[m
+[32m+[m[32m                        "duplicate question text in this topic",[m
+[32m+[m[32m                    )[m
+[32m+[m[32m                else:[m
+[32m+[m[32m                    seen_question_texts.add(question_text)[m
+[32m+[m
+[32m+[m[32m            if answer_key is not None and valid_question_text
