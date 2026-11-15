@@ -82,14 +82,23 @@ def prepare_questions(questions):
     return prepared
 
 
+RESULT_TIERS = (
+    (80, "excellent", "Excellent work!"),
+    (60, "well-done", "Well done!"),
+    (40, "good-effort", "Good effort! Try again."),
+    (0, "keep-practicing", "Keep practicing!"),
+)
+
+
+def score_feedback(percentage):
+    for minimum, tier, message in RESULT_TIERS:
+        if percentage >= minimum:
+            return tier, message
+    return "keep-practicing", "Keep practicing!"
+
+
 def score_message(percentage):
-    if percentage == 100:
-        return "Excellent. You got every question right."
-    if percentage >= 80:
-        return "Great job. You have a strong grasp of this topic."
-    if percentage >= 50:
-        return "Good effort. Review the missed questions below."
-    return "Keep practicing. Review the suggestions below and try again."
+    return score_feedback(percentage)[1]
 
 
 class QuizHandler(BaseHTTPRequestHandler):
@@ -186,7 +195,7 @@ class QuizHandler(BaseHTTPRequestHandler):
         answers = data.get("answers")
 
         with sessions_lock:
-            session = sessions.pop(quiz_id, None)
+            session = sessions.get(quiz_id)
 
         if session is None:
             self.send_json(
@@ -230,12 +239,18 @@ class QuizHandler(BaseHTTPRequestHandler):
 
         total = len(session)
         percentage = round(score / total * 100)
+        tier, message = score_feedback(percentage)
+
+        with sessions_lock:
+            sessions.pop(quiz_id, None)
+
         self.send_json(
             {
                 "score": score,
                 "total": total,
                 "percentage": percentage,
-                "message": score_message(percentage),
+                "tier": tier,
+                "message": message,
                 "review": review,
             }
         )

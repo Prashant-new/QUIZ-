@@ -23,11 +23,51 @@ const elements = {
   nextBtn: document.getElementById("next-btn"),
   resultScreen: document.getElementById("result-screen"),
   score: document.getElementById("score"),
+  scorePercent: document.getElementById("score-percent"),
   scoreMessage: document.getElementById("score-message"),
+  trophy: document.getElementById("trophy"),
   review: document.getElementById("review"),
   againBtn: document.getElementById("again-btn"),
   error: document.getElementById("error"),
+  themeToggle: document.getElementById("theme-toggle"),
+  confetti: document.getElementById("confetti"),
 };
+
+const THEME_KEY = "quiz-theme";
+
+const RESULT_FEEDBACK = [
+  { minimum: 80, tier: "excellent", message: "Excellent work!" },
+  { minimum: 60, tier: "well-done", message: "Well done!" },
+  { minimum: 40, tier: "good-effort", message: "Good effort! Try again." },
+  { minimum: 0, tier: "keep-practicing", message: "Keep practicing!" },
+];
+
+function scorePercentage(score, total) {
+  if (!Number.isFinite(score) || !Number.isFinite(total) || total <= 0) {
+    return 0;
+  }
+  return Math.round((score / total) * 100);
+}
+
+function feedbackForPercentage(percentage) {
+  return (
+    RESULT_FEEDBACK.find((band) => percentage >= band.minimum) ||
+    RESULT_FEEDBACK[RESULT_FEEDBACK.length - 1]
+  );
+}
+
+function prefersReducedMotion() {
+  return (
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function clearConfetti() {
+  if (elements.confetti) {
+    elements.confetti.innerHTML = "";
+  }
+}
 
 async function api(path, options = {}) {
   let response;
@@ -72,7 +112,9 @@ function setProgress(percent) {
 function selectTopic(topic) {
   state.selectedTopic = topic;
   elements.topics.querySelectorAll(".topic").forEach((button) => {
-    button.classList.toggle("selected", button.dataset.topic === topic.id);
+    const isSelected = button.dataset.topic === topic.id;
+    button.classList.toggle("selected", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
   });
 
   elements.count.max = topic.count;
@@ -89,6 +131,7 @@ function renderTopics() {
     button.type = "button";
     button.className = "topic";
     button.dataset.topic = topic.id;
+    button.setAttribute("aria-pressed", "false");
 
     const name = document.createElement("span");
     name.className = "topic-name";
@@ -179,6 +222,7 @@ function renderQuestion() {
     button.type = "button";
     button.className = "choice";
     button.classList.toggle("selected", state.selectedChoice === index);
+    button.setAttribute("aria-pressed", String(state.selectedChoice === index));
 
     const key = document.createElement("span");
     key.className = "key";
@@ -196,13 +240,22 @@ function renderQuestion() {
   elements.previousBtn.disabled = state.current === 0;
   elements.nextBtn.disabled = state.selectedChoice === null;
   elements.nextBtn.textContent = isLast ? "Finish quiz" : "Next question";
+  animateQuestion();
+}
+
+function animateQuestion() {
+  elements.quizScreen.classList.remove("question-enter");
+  void elements.quizScreen.offsetWidth;
+  elements.quizScreen.classList.add("question-enter");
 }
 
 function selectChoice(index) {
   state.selectedChoice = index;
   state.answers[state.current] = index;
   elements.choices.querySelectorAll(".choice").forEach((button, buttonIndex) => {
-    button.classList.toggle("selected", buttonIndex === index);
+    const isSelected = buttonIndex === index;
+    button.classList.toggle("selected", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
   });
   elements.nextBtn.disabled = false;
 }
@@ -249,8 +302,9 @@ async function submitQuiz() {
       }),
     });
 
-    renderResults(result);
+    const tier = renderResults(result);
     showScreen("result");
+    applyResultFeedback(tier);
   } catch (error) {
     showError(error.message);
     elements.nextBtn.disabled = false;
@@ -259,16 +313,26 @@ async function submitQuiz() {
 }
 
 function renderResults(result) {
-  elements.score.textContent = `You scored ${result.score} out of ${result.total} (${result.percentage}%).`;
-  elements.scoreMessage.textContent = result.message;
+  const score = Number(result.score);
+  const total = Number(result.total);
+  const safeScore = Number.isFinite(score) ? score : 0;
+  const safeTotal = Number.isFinite(total) ? total : 0;
+  const percentage = scorePercentage(safeScore, safeTotal);
+  const feedback = feedbackForPercentage(percentage);
+
+  if (elements.scorePercent) {
+    elements.scorePercent.textContent = `${percentage}%`;
+  }
+  elements.score.textContent = `You scored ${safeScore} out of ${safeTotal}.`;
+  elements.scoreMessage.textContent = feedback.message;
   elements.review.innerHTML = "";
 
-  if (result.review.length === 0) {
+  if (!Array.isArray(result.review) || result.review.length === 0) {
     const empty = document.createElement("p");
     empty.className = "empty";
     empty.textContent = "Nothing to review. You answered every question correctly.";
     elements.review.appendChild(empty);
-    return;
+    return feedback.tier;
   }
 
   const heading = document.createElement("h3");
@@ -301,6 +365,97 @@ function renderResults(result) {
     card.append(meta, question, chosen, correct, suggestion);
     elements.review.appendChild(card);
   });
+
+  return feedback.tier;
+}
+
+function applyResultFeedback(tier) {
+  const tierClasses = RESULT_FEEDBACK.map((band) => `tier-${band.tier}`);
+  elements.resultScreen.classList.remove(...tierClasses, "celebrate");
+  elements.resultScreen.classList.add(`tier-${tier}`);
+
+  if (elements.trophy) {
+    elements.trophy.classList.toggle("hidden", tier !== "excellent");
+  }
+
+  clearConfetti();
+
+  if (tier === "excellent" && !prefersReducedMotion()) {
+    celebrate();
+  }
+}
+
+function celebrate() {
+  if (!elements.confetti || prefersReducedMotion()) {
+    return;
+  }
+
+  clearConfetti();
+  const colors = ["#6366f1", "#8b5cf6", "#22d3ee", "#f472b6", "#f59e0b", "#34d399"];
+
+  for (let i = 0; i < 90; i += 1) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.width = `${6 + Math.random() * 8}px`;
+    piece.style.height = `${8 + Math.random() * 10}px`;
+    piece.style.background = colors[i % colors.length];
+    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 240}px`);
+    piece.style.setProperty("--spin", `${360 + Math.random() * 720}deg`);
+    piece.style.animationDuration = `${2.6 + Math.random() * 2.2}s`;
+    piece.style.animationDelay = `${Math.random() * 0.6}s`;
+    elements.confetti.appendChild(piece);
+  }
+
+  window.setTimeout(clearConfetti, 5400);
+}
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.documentElement.dataset.theme = isDark ? "dark" : "light";
+
+  if (elements.themeToggle) {
+    elements.themeToggle.setAttribute("aria-pressed", String(isDark));
+    elements.themeToggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light mode" : "Switch to dark mode",
+    );
+    const label = elements.themeToggle.querySelector(".theme-label");
+    if (label) {
+      label.textContent = isDark ? "Light mode" : "Dark mode";
+    }
+  }
+
+  try {
+    localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+  } catch (error) {
+    /* Storage may be unavailable; the theme still applies for this session. */
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.dataset.theme === "dark";
+  applyTheme(isDark ? "light" : "dark");
+}
+
+function attachRipple() {
+  document.addEventListener("pointerdown", (event) => {
+    const button = event.target.closest(".primary, .secondary, .topic, .choice");
+    if (!button || button.disabled) {
+      return;
+    }
+
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 2;
+    const ripple = document.createElement("span");
+    ripple.className = "ripple";
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+    ripple.addEventListener("animationend", () => ripple.remove());
+    button.appendChild(ripple);
+  });
 }
 
 function resetQuiz() {
@@ -309,6 +464,13 @@ function resetQuiz() {
   state.answers = [];
   state.selectedChoice = null;
   showError("");
+  clearConfetti();
+
+  const tierClasses = RESULT_FEEDBACK.map((band) => `tier-${band.tier}`);
+  elements.resultScreen.classList.remove(...tierClasses, "celebrate");
+  if (elements.trophy) {
+    elements.trophy.classList.add("hidden");
+  }
   showScreen("start");
 }
 
@@ -344,5 +506,12 @@ elements.startBtn.addEventListener("click", startQuiz);
 elements.previousBtn.addEventListener("click", previousQuestion);
 elements.nextBtn.addEventListener("click", nextQuestion);
 elements.againBtn.addEventListener("click", resetQuiz);
+
+applyTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+attachRipple();
+
+if (elements.themeToggle) {
+  elements.themeToggle.addEventListener("click", toggleTheme);
+}
 
 loadTopics();
