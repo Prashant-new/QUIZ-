@@ -78,10 +78,10 @@
       "erase *": "ask",
       "rd *": "ask",
       "rmdir *": "ask",
-      "Remove-Item *": "ask",
-      "git clean *": "ask",
-      "git rm *": "ask",
-      "git push *": "ask"
+      "Remove-Item *": "deny",
+      "git clean *": "deny",
+      "git rm *": "deny",
+      "git push *": "deny"
     },
 
     // Keep tool-driven access inside the workspace. opencode still needs its
