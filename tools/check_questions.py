@@ -189,6 +189,48 @@ def check_questions(data, answer_key=None):
                                 ),
                             )
 
+    if isinstance(answer_key, dict):
+        for key_topic, topic_answers in answer_key.items():
+            topic_data = data.get(key_topic)
+            if not isinstance(topic_data, dict) or not isinstance(
+                topic_data.get("questions"), list
+            ):
+                add_error(
+                    errors,
+                    key_topic,
+                    None,
+                    "answer key contains topic '{}' that is not in the question bank".format(
+                        key_topic
+                    ),
+                )
+                continue
+
+            if not isinstance(topic_answers, dict):
+                add_error(
+                    errors,
+                    key_topic,
+                    None,
+                    "answer key topic must be a JSON object",
+                )
+                continue
+
+            bank_question_texts = {
+                question.get("question")
+                for question in topic_data["questions"]
+                if isinstance(question, dict)
+                and is_non_empty_text(question.get("question"))
+            }
+            for question_text in topic_answers:
+                if question_text not in bank_question_texts:
+                    add_error(
+                        errors,
+                        key_topic,
+                        None,
+                        "answer key has an expected answer for a question not in the bank: {!r}".format(
+                            question_text
+                        ),
+                    )
+
     return checked_questions, checked_answers, errors
 
 

@@ -12,11 +12,12 @@ Buid a web-based quiz that helps students practise topics and review their mista
 1. Students can choose a topic and question count.
 2. The application presents multiple-choice questions.
 3. Students can move backwards and forwards before submission.
-4. Selected answers remain saved during navigation.
-5. Students can change answers before submitting.
-6. The server calculates the score using the final answers.
-7. Correct answers are not sent to the browser before submission.
-8. Results show the score and explanations for incorrect answers.
+4. Students can move forward without answering the current question first.
+5. Selected answers remain saved during navigation.
+6. Students can change answers before submitting.
+7. The server calculates the score using the final answers.
+8. Correct answers are not sent to the browser before submission.
+9. Results show the score and explanations for incorrect answers.
 
 ## Question-bank requirements
 Each question must contain:
