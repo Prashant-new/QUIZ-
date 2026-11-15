@@ -67,6 +67,42 @@
         "choices": ["^", "**", "*", "//"],
         "answer": 1,
         "explanation": "The ** operator means exponentiation, so 2 ** 3 is 8. The ^ operator is bitwise XOR."
+      },
+      {
+        "question": "Which list method removes and returns the last item?",
+        "choices": ["append()", "pop()", "remove()", "insert()"],
+        "answer": 1,
+        "explanation": "pop() with no argument removes and returns the last item of a list, while remove() deletes a value by matching it."
+      },
+      {
+        "question": "How do you access the value stored under the key 'name' in a dictionary called person?",
+        "choices": ["person['name']", "person.name", "person('name')", "person->name"],
+        "answer": 0,
+        "explanation": "Dictionary values are accessed with square brackets and the key, for example: person['name']. Dot notation and parentheses do not look up dictionary keys."
+      },
+      {
+        "question": "Which string method removes leading and trailing whitespace in Python?",
+        "choices": ["strip()", "trim()", "clean()", "squeeze()"],
+        "answer": 0,
+        "explanation": "strip() returns a copy of the string with leading and trailing whitespace removed."
+      },
+      {
+        "question": "Which list method adds a single item to the end of a list in Python?",
+        "choices": ["append()", "add()", "push()", "insert()"],
+        "answer": 0,
+        "explanation": "append() adds one item to the end of a list, while insert() adds an item at a specific position."
+      },
+      {
+        "question": "Which keyword is used to import a module in Python?",
+        "choices": ["import", "include", "require", "using"],
+        "answer": 0,
+        "explanation": "The import keyword loads a module, for example: import math."
+      },
+      {
+        "question": "Which built-in function returns the largest item in an iterable?",
+        "choices": ["max()", "min()", "sum()", "top()"],
+        "answer": 0,
+        "explanation": "max() returns the largest item, for example: max([3, 1, 2]) is 3."
       }
     ]
   },

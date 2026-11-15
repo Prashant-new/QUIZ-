@@ -1,0 +1,51 @@
+{
+  "python": {
+    "Which keyword defines a function in Python?": "def",
+    "What is the type of the result of 10 / 2 in Python 3?": "float",
+    "Which symbol starts a single-line comment in Python?": "#",
+    "Which literal syntax creates a list in Python?": "[1, 2]",
+    "What does len('hello') return?": "5",
+    "Which Python type is immutable?": "tuple",
+    "What numbers does range(3) produce?": "0, 1, 2",
+    "Which block is used to handle exceptions in Python?": "try/except",
+    "Which function displays text in the console in Python?": "print()",
+    "Which Python type is used for the values True and False?": "bool",
+    "Which operator raises a number to a power in Python?": "**",
+    "Which list method removes and returns the last item?": "pop()",
+    "How do you access the value stored under the key 'name' in a dictionary called person?": "person['name']",
+    "Which string method removes leading and trailing whitespace in Python?": "strip()",
+    "Which list method adds a single item to the end of a list in Python?": "append()",
+    "Which keyword is used to import a module in Python?": "import",
+    "Which built-in function returns the largest item in an iterable?": "max()"
+  },
+  "java": {
+    "Which is the correct main method signature in Java?": "public static void main(String[] args)",
+    "Which of these is a primitive type in Java?": "int",
+    "Which keyword lets a class inherit from another class?": "extends",
+    "How should you compare two Strings for equal text in Java?": ".equals()",
+    "Which command compiles a Java source file?": "javac",
+    "What is the default value of an int field in Java?": "0",
+    "Which collection stores key-value pairs in Java?": "HashMap",
+    "What does the final keyword mean for a variable?": "It cannot be reassigned"
+  },
+  "html": {
+    "Which tag creates the largest heading in HTML?": "<h1>",
+    "Which tag creates a hyperlink?": "<a>",
+    "Which attribute provides alternative text for an image?": "alt",
+    "Which tag inserts a single line break?": "<br>",
+    "Which tag creates an unordered (bulleted) list?": "<ul>",
+    "Which tag is best for a block of navigation links?": "<nav>",
+    "Which input type hides the characters a user types?": "password",
+    "Which doctype declares an HTML5 document?": "<!DOCTYPE html>"
+  },
+  "javascript": {
+    "Which keyword declares a block-scoped variable in JavaScript?": "let",
+    "Which operator checks equality without type conversion?": "===",
+    "What is the result of typeof 'hello' in JavaScript?": "string",
+    "Which method adds an item to the end of an array?": "push",
+    "What happens when you reassign a const variable?": "It throws an error",
+    "Which of these is an arrow function?": "() => {}",
+    "Which method selects an element by its id?": "document.getElementById",
+    "What does NaN stand for?": "Not a Number"
+  }
+}

@@ -42,9 +42,13 @@ Ask OpenCode:
 and report the result."
 
 ## Verification so far
-The Python checker was run manually on 35 questions.
-It reported passed: true and an empty error list.
+The Python checker was run manually on 41 questions.
+It reported passed: true, checked_answers: 41, and an empty error list.
+The question bank and tools/answer_key.json are currently in sync.
 
 ## Limitations
-The checker validates the structure of the question data.
-It does not verify factual corrections, browser navigation, or application scoring.
+The checker validates the structure of the question data and verifies that every
+stored answer index matches the trusted tools/answer_key.json. It also fails when
+the key has stale or unknown entries, keeping the key and question bank in sync.
+It does not verify the factual correctness of the answer key itself, browser
+navigation, or application scoring.

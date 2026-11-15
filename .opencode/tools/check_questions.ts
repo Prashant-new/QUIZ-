@@ -4,7 +4,10 @@ import path from "path"
 export default tool({
   description:
     "Validate the quiz question bank with the repository's existing " +
-    "tools/check_questions.py and return its JSON report. Read-only.",
+    "tools/check_questions.py. Verifies every question's stored answer " +
+    "index against the trusted tools/answer_key.json, and reports missing, " +
+    "stale, or unknown answer-key entries so the two files stay in sync. " +
+    "Returns the checker's JSON report. Read-only.",
   args: {
     path: tool.schema
       .string()
